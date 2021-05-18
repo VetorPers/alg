@@ -61,3 +61,4 @@ class Solution
 $l1 = ["Shogun", "Tapioca Express", "Burger King", "KFC"];
 $l2 = ["KFC", "Shogun", "Burger King"];
 (new Solution)->findRestaurant($l1, $l2);
+
