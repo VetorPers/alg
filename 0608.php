@@ -45,3 +45,5 @@ function EntryNodeOfLoop($pHead)
 
     return $slow;
 }
+
+echo time();
