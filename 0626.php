@@ -3,7 +3,7 @@
 function generatePoint()
 {
     $points = [];
-    for ($i = 0; $i < 200; $i++) {
+    for ($i = 0; $i < 5; $i++) {
         $points[] = [mt_rand(1, 999), mt_rand(1, 999)];
     }
 
@@ -41,3 +41,18 @@ function force($points)
     return [$ret, $points[$ti], $points[$tj]];
 }
 print_r(force($points));
+
+function divide($points)
+{
+    $cnt = count($points);
+    if ($cnt < 2) return [0, 0, 0];
+
+    array_multisort(array_column($points, 0), $points);
+    $half = ($cnt - 1) >> 2;
+    divide(array_slice($points, 0, $half));
+    divide(array_slice($points, $half + 1, $half));
+
+    return $points;
+}
+
+print_r(divide($points));
