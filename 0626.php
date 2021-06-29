@@ -55,4 +55,5 @@ function divide($points)
     return $points;
 }
 
+
 print_r(divide($points));
