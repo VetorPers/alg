@@ -51,6 +51,6 @@ function knapsack2($wArr, $n, $w)
         if ($stages[$i] == true) return $i;
     }
 
-    return 0;
+    return false;
 }
 echo knapsack2([2, 2, 4, 6, 3], 5, 9);
