@@ -50,7 +50,7 @@ function knapsack2($wArr, $n, $w)
     for ($i = $w; $i >= 0; $i--) {
         if ($stages[$i] == true) return $i;
     }
-    
-    return -1;
+
+    return 0;
 }
 echo knapsack2([2, 2, 4, 6, 3], 5, 9);
