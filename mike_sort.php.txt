@@ -1,0 +1,92 @@
+<?php
+
+function customSort(&$arr)
+{
+    uasort($arr, 'cmp');
+}
+
+function cmp($a, $b)
+{
+    // 转小写
+    $a = strtolower($a);
+    $b = strtolower($b);
+
+    $aLen = strlen($a);
+    $bLen = strlen($b);
+
+    $i = $j = 0;
+    // 两个指针分别从字符串a、b开始取值
+    while ($i < $aLen - 1 && $j < $bLen - 1) {
+        // 都是字母比较字母
+        if ( !is_numeric($a[$i]) && !is_numeric($b[$j])) {
+            if ($a[$i] > $b[$i]) return 1;
+            if ($b[$i] > $a[$j]) return -1;
+
+            // 如果相等继续移动
+            $i++;
+            $j++;
+        }
+
+        // 如果a上是字母，b上是数字，直接认为a大
+        if ( !is_numeric($a[$i]) && is_numeric($b[$j])) {
+            return -1;
+        }
+
+        // 如果b上是字母，a上是数字，直接认为b大
+        if (is_numeric($a[$i]) && !is_numeric($b[$j])) {
+            return 1;
+        }
+
+        // 都是数字
+        if (is_numeric($a[$i]) && is_numeric($b[$j])) {
+            $aa = $a[$i];
+            $bb = $b[$j];
+            // 需要向后移动获取a上连续的数字
+            while (is_numeric($a[$i]) && $i < $aLen - 1) {
+                $aa .= $a[$i];
+                $i++;
+            }
+
+            // 需要向后移动获取b上连续的数字
+            while (is_numeric($b[$j]) && $j < $bLen - 1) {
+                $bb .= $b[$j];
+                $j++;
+            }
+
+            if ($aa > $bb) return 1;
+            if ($bb > $aa) return -1;
+
+            // 数字相等继续移动
+            $i++;
+            $j++;
+        }
+    }
+
+    // a还剩余字符，排序靠后
+    if ($i < $aLen - 1) return 1;
+    // b还剩余字符，排序靠后
+    if ($j < $bLen - 1) return -1;
+
+    return 0;
+}
+
+$arr = [
+    '0' => 'a1',
+    '1' => 'A10',
+    '2' => 'a12',
+    '3' => 'A2',
+    '4' => 'a3',
+];
+
+customSort($arr);
+print_r($arr);
+
+print_r(cmp('ab', 'ab10'));
+
+$arr1 = ['a1b', 'ab', 'ab10', 'a1'];
+customSort($arr1);
+print_r($arr1);
+
+$arr2 = ['test3.png', 'Test1.Png', 'TEST2.png', 'test.PNG'];
+customSort($arr2);
+print_r($arr2);

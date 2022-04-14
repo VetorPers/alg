@@ -1,0 +1,29 @@
+<?php
+
+function regions($id)
+{
+    // 获取当前id的地区数据
+    $regionItem = \DB::table('regions')
+        ->select('id', 'name', 'parent_id', 'full_parent_id')
+        ->where('id', $id)
+        ->first();
+
+    // 获取直接子级
+    $children = \DB::table('regions')
+        ->select('id', 'name')
+        ->where('parent_id', $id)
+        ->limit(10)
+        ->get();
+
+    $parents = [];
+    // 存在父级，则通过父级id解析成数组直接查询
+    if ($regionItem && $regionItem->full_parent_id) {
+        $parentIds = explode('/', $regionItem->full_parent_id);
+        $parents = \DB::table('regions')
+            ->select('id', 'name')
+            ->whereIn('id', $parentIds)
+            ->get();
+    }
+
+    return compact('children', 'parents');
+}

@@ -1,0 +1,46 @@
+<?php
+
+function add($num1, $num2)
+{
+    // 分离整数和小数
+    $num1Arr = explode('.', $num1);
+    $num2Arr = explode('.', $num2);
+
+    $floatNum1Digit = strlen($num1Arr[1]);
+    $floatNum2Digit = strlen($num2Arr[1]);
+    // 小数位数不够填充0
+    if ($floatNum1Digit > $floatNum2Digit) {
+        $floatMaxDigit = $floatNum1Digit;
+        $num2Arr[1] = str_pad($num2Arr[1], $floatNum1Digit, 0);
+    } else {
+        $floatMaxDigit = $floatNum2Digit;
+        $num1Arr[1] = str_pad($num1Arr[1], $floatNum2Digit, 0);
+    }
+
+    $more = 0;
+    $floatResult = [];
+    // 小数位做加法，大于10进1，放入结果集
+    for ($i = $floatMaxDigit - 1; $i >= 0; $i--) {
+        $tmp = $num1Arr[1][$i] + $num2Arr[1][$i] + $more;
+        if ($tmp >= 10) {
+            $tmp -= 10;
+            $more = 1;
+        } else {
+            $more = 0;
+        }
+
+        array_unshift($floatResult, $tmp);
+    }
+
+    // 结果集转成连续数字
+    $float = implode('', $floatResult);
+    // 拼接数字
+    $res = $num1Arr[0] + $num2Arr[0] + $more . '.' . $float;
+
+    return $res;
+}
+
+var_dump(12345.111111111 + 123444.87654321);
+var_dump(bcadd(12345.111111111, 123444.87654321, 9));
+$res = add(12345.111111111, 123444.87654321);
+var_dump($res);
